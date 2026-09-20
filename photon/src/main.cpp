@@ -97,17 +97,21 @@ void setup() {
 
   // Setup Feeder
   feeder = new PhotonFeeder(MOTOR_ENABLE, DRIVE1, DRIVE2, PEEL1, PEEL2, LED_R, LED_G, LED_B, &encoder);
-  network = new PhotonNetworkLayer(&bus, &packetizer, &addressFilter, &feederFloor);
+
+  // Short delay to make sure motor drivers are in a settled initial state
+  delay(500);
+
+  // Read the feeder floor address here before doing anything else
+  byte floorAddress = feederFloor.read_floor_address();
+
+  // Setup the remaining feeder interface components
+  network = new PhotonNetworkLayer(&bus, &packetizer, &addressFilter, floorAddress);
   protocol = new PhotonFeederProtocol(feeder, &feederFloor, network, UniqueID, UniqueIDsize);
 
-  delay(200);
-  
-  byte addr = feederFloor.read_floor_address();
-
-  if(addr == 0xFF){ // not detected, turn red
+  if(floorAddress == 0xFF){ // not detected, turn red
     feeder->set_rgb(true, false, false);
   }
-  else if (addr == 0x00){ //not programmed, turn blue
+  else if (floorAddress == 0x00){ //not programmed, turn blue
     feeder->set_rgb(false, false, true);
   }
 

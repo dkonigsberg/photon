@@ -23,7 +23,7 @@ public:
     RS485Bus<RS485_BUS_BUFFER_SIZE>* bus,
     Packetizer* packetizer,
     FilterByValue* addressFilter,
-    FeederFloor* feederFloor);
+    uint8_t floorAddress);
 
     void setLocalAddress(uint8_t address);
     uint8_t getLocalAddress();
@@ -38,7 +38,6 @@ private:
     RS485Bus<RS485_BUS_BUFFER_SIZE>* _bus;
     Packetizer* _packetizer;
     FilterByValue* _addressFilter;
-    FeederFloor* _feederFloor;
     uint8_t _send_buffer[64];
 
     uint8_t _local_address;

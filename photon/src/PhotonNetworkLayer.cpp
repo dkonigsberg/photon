@@ -19,14 +19,12 @@ PhotonNetworkLayer::PhotonNetworkLayer(
     RS485Bus<RS485_BUS_BUFFER_SIZE>* bus,
     Packetizer* packetizer,
     FilterByValue* addressFilter,
-    FeederFloor* feederFloor) :
+    uint8_t floorAddress) :
     _bus(bus),
     _packetizer(packetizer),
     _addressFilter(addressFilter),
-    _feederFloor(feederFloor),
-    _local_address(0xFF) {
+    _local_address(floorAddress) {
     
-    _local_address = _feederFloor->read_floor_address();
     _packetizer->setFilter(*_addressFilter);
     _packetizer->setFalsePacketVerificationTimeout(10000);
     _packetizer->setMaxReadTimeout(50000);
