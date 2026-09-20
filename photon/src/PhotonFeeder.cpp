@@ -56,6 +56,7 @@
 #endif
 
 PhotonFeeder::PhotonFeeder(
+            uint8_t enable_pin,
             uint8_t drive1_pin,
             uint8_t drive2_pin,
             uint8_t peel1_pin,
@@ -75,6 +76,16 @@ PhotonFeeder::PhotonFeeder(
     _position(0),
     _encoder(encoder) {
 
+    // Make sure motor drivers are disabled and
+    // set the initial state of all control pins
+    digitalWrite(enable_pin, LOW);
+    digitalWrite(_drive1_pin, LOW);
+    digitalWrite(_drive2_pin, LOW);
+    digitalWrite(_peel1_pin, LOW);
+    digitalWrite(_peel2_pin, LOW);
+
+    // Set the pin modes of all control pins
+    pinMode(enable_pin, OUTPUT);
     pinMode(_drive1_pin, OUTPUT);
     pinMode(_drive2_pin, OUTPUT);
     pinMode(_peel1_pin, OUTPUT);
@@ -83,6 +94,9 @@ PhotonFeeder::PhotonFeeder(
     pinMode(_led_red, OUTPUT);
     pinMode(_led_green, OUTPUT);
     pinMode(_led_blue, OUTPUT);
+
+    // Enable the motor drivers
+    digitalWrite(enable_pin, HIGH);
 
     if(_version == ""){
         _version = "debug";

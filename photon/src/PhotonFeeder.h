@@ -22,6 +22,7 @@ class PhotonFeeder {
         };
 
         PhotonFeeder(
+            uint8_t enable_pin,
             uint8_t drive1_pin,
             uint8_t drive2_pin,
             uint8_t peel1_pin,
